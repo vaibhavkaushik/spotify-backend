@@ -1,0 +1,181 @@
+openapi: 3.0.1
+info:
+  version: 1.0.0
+  title: Spotify Clone
+  description: Spotify Clone
+  contact:
+    email: nknidhi321@gmail.com
+
+tags:
+  - name: greetings
+    description: greets
+    externalDocs:
+      description: Find out more about our site
+      url: http://swagger.io
+  - name: users
+    description: User APIs
+    externalDocs:
+      description: Find out more about our site
+      url: http://swagger.io
+
+paths:
+  /greet:
+    get:
+      tags:
+        - greetings
+      summary: Greet the user
+      operationId: greetUser
+      responses:
+        200:
+          description: hello to user
+          content:
+            application/json:
+              schema:
+                type: string
+        404:
+          description: can't greet
+          content: { }
+
+  /users:
+    get:
+      tags:
+        - users
+      summary: Fetch all users
+      operationId: getUsers
+      responses:
+        200:
+          description: All users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        500:
+          description: internal server error
+        404:
+          description: can't greet
+          content: { }
+    post:
+      tags:
+        - users
+      summary: "Add a new user"
+      operationId: createUser
+      requestBody:
+        description: User details
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        404:
+          description: User not found
+          content: { }
+
+  /users/{userid}:
+    get:
+      tags:
+        - users
+      summary: Fetch user
+      operationId: getUser
+      parameters:
+        - name: userid
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: hello to user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        500:
+          description: internal server error
+        400:
+          description: bad request
+        404:
+          description: can't greet
+          content: { }
+
+    put:
+      tags:
+        - users
+      summary: "update an existing user"
+      operationId: updateUser
+      parameters:
+        - name: userid
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: User Data To Update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        200:
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        404:
+          description: User not found
+          content: { }
+
+    delete:
+      tags:
+        - users
+      summary: Delete user
+      operationId: removeUser
+      parameters:
+        - name: userid
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                type: string
+        404:
+          description: Blog not found
+          content: { }
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        name:
+          type: string
+        contact_no:
+          type: string
+        email:
+          type: string
+          format: email
+        dob:
+          type: string
+          format: date
+          example: 22-06-2021
+        image:
+          type: string
+          format: uri
