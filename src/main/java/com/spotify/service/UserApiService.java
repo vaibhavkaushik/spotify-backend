@@ -60,8 +60,12 @@ public class UserApiService implements UsersApiDelegate {
     @Override
     public ResponseEntity<Object> removeUser(Long userid) {
         try {
-            userRepository.deleteById(userid);
-            return new ResponseEntity<>(Constants.USER_DELETE_SUCCESS,HttpStatus.OK);
+            Optional<UserEntity> fetchedUserEntity = userRepository.findById(userid);
+            if(fetchedUserEntity.isPresent()) {
+                userRepository.deleteById(userid);
+                return new ResponseEntity<>(Constants.USER_DELETE_SUCCESS, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(new ApiErrorResponse(HttpStatus.NOT_FOUND,Constants.USER_NOT_FOUND), HttpStatus.NOT_FOUND);
         } catch (Exception e){
             return new ResponseEntity<>(new ApiErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR,Constants.USER_DELETE_FAIL + "Error : " + e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -71,10 +75,14 @@ public class UserApiService implements UsersApiDelegate {
     public ResponseEntity<Object> updateUser(Long userid, User user) {
 
         try {
-            user.setId(userid);
-            UserEntity updatedUser = ObjectMapperUtils.map(user,UserEntity.class);
-            userRepository.save(updatedUser);
-            return new ResponseEntity<>(user,HttpStatus.OK);
+            Optional<UserEntity> fetchedUserEntity = userRepository.findById(userid);
+            if(fetchedUserEntity.isPresent()) {
+                user.setId(userid);
+                UserEntity updatedUser = ObjectMapperUtils.map(user, UserEntity.class);
+                userRepository.save(updatedUser);
+                return new ResponseEntity<>(user, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(new ApiErrorResponse(HttpStatus.NOT_FOUND,Constants.USER_NOT_FOUND), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             return new ResponseEntity<>(new ApiErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR,Constants.USER_UPDATE_FAIL + "Error : " + e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
