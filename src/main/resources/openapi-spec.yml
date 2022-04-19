@@ -19,23 +19,6 @@ tags:
       url: http://swagger.io
 
 paths:
-  /greet:
-    get:
-      tags:
-        - greetings
-      summary: Greet the user
-      operationId: greetUser
-      responses:
-        200:
-          description: hello to user
-          content:
-            application/json:
-              schema:
-                type: string
-        404:
-          description: can't greet
-          content: { }
-
   /users:
     get:
       tags:
@@ -48,13 +31,13 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/User'
+                type: object
+                #items:
+                  #$ref: '#/components/schemas/User'
         500:
-          description: internal server error
+          description: Something Went Wrong
         404:
-          description: can't greet
+          description: No Users Found
           content: { }
     post:
       tags:
@@ -70,13 +53,14 @@ paths:
               $ref: '#/components/schemas/User'
       responses:
         201:
-          description: Created
+          description: Created User Successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-        404:
-          description: User not found
+                type: object
+                #$ref: '#/components/schemas/User'
+        500:
+          description: Error Creating User
           content: { }
 
   /users/{userid}:
@@ -94,18 +78,33 @@ paths:
             format: int64
       responses:
         200:
-          description: hello to user
+          description: User Fetched Successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                type: object
+                #$ref: '#/components/schemas/User'
         500:
           description: internal server error
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Internal Server Error
         400:
-          description: bad request
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Bad Request
         404:
-          description: can't greet
-          content: { }
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: string
+                example: User Not Found
 
     put:
       tags:
@@ -132,10 +131,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-        404:
-          description: User not found
-          content: { }
+                type: object
+                #$ref: '#/components/schemas/User'
+
 
     delete:
       tags:
@@ -155,7 +153,7 @@ paths:
           content:
             application/json:
               schema:
-                type: string
+                type: object
         404:
           description: Blog not found
           content: { }
