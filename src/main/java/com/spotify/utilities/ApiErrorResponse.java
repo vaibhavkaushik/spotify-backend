@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 @Setter
 public class ApiErrorResponse {
+    Integer code;
     HttpStatus status;
     String message;
 }
