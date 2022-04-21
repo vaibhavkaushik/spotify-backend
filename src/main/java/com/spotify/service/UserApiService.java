@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserApiService implements UsersApiDelegate {
+public class  UserApiService implements UsersApiDelegate {
 
     @Override
     public ResponseEntity<Object> createUser(User user) {
@@ -27,7 +27,7 @@ public class UserApiService implements UsersApiDelegate {
 
             return new ResponseEntity<>(userCreated, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(new ApiErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new ApiErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -39,9 +39,9 @@ public class UserApiService implements UsersApiDelegate {
                 User fetchedUser = ObjectMapperUtils.map(fetchedUserEntity.get(), User.class);
                 return new ResponseEntity<>(fetchedUser, HttpStatus.OK);
             }
-            return new ResponseEntity<>(new ApiErrorResponse(HttpStatus.NOT_FOUND,Constants.USER_NOT_FOUND), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ApiErrorResponse(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND,Constants.USER_NOT_FOUND), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            return new ResponseEntity<>(new ApiErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new ApiErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -53,7 +53,7 @@ public class UserApiService implements UsersApiDelegate {
 
             return new ResponseEntity<>(fetchedUserList, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(new ApiErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new ApiErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -65,9 +65,9 @@ public class UserApiService implements UsersApiDelegate {
                 userRepository.deleteById(userid);
                 return new ResponseEntity<>(Constants.USER_DELETE_SUCCESS, HttpStatus.OK);
             }
-            return new ResponseEntity<>(new ApiErrorResponse(HttpStatus.NOT_FOUND,Constants.USER_NOT_FOUND), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ApiErrorResponse(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND,Constants.USER_NOT_FOUND), HttpStatus.NOT_FOUND);
         } catch (Exception e){
-            return new ResponseEntity<>(new ApiErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR,Constants.USER_DELETE_FAIL + "Error : " + e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new ApiErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR,Constants.USER_DELETE_FAIL + "Error : " + e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -82,9 +82,9 @@ public class UserApiService implements UsersApiDelegate {
                 userRepository.save(updatedUser);
                 return new ResponseEntity<>(user, HttpStatus.OK);
             }
-            return new ResponseEntity<>(new ApiErrorResponse(HttpStatus.NOT_FOUND,Constants.USER_NOT_FOUND), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ApiErrorResponse(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND,Constants.USER_NOT_FOUND), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            return new ResponseEntity<>(new ApiErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR,Constants.USER_UPDATE_FAIL + "Error : " + e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new ApiErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR,Constants.USER_UPDATE_FAIL + "Error : " + e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
