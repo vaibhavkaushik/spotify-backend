@@ -1,10 +1,10 @@
-package com.spotify.service;
+package com.spotify.service.song;
 
-import com.spotify.SongsApiDelegate;
 import com.spotify.entities.SongEntity;
 import com.spotify.model.Song;
 import com.spotify.repository.SongRepository;
 import com.spotify.utilities.ApiErrorResponse;
+import com.spotify.utilities.ApiSuccessResponse;
 import com.spotify.utilities.Constants;
 import com.spotify.utilities.ObjectMapperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class SongsApiService implements SongsApiDelegate {
+public class SongsApiServiceImpl implements SongsApiService {
 
     @Autowired
     SongRepository songRepository;
@@ -63,7 +63,7 @@ public class SongsApiService implements SongsApiDelegate {
             Optional<SongEntity> fetchedSongEntity = songRepository.findById(songid);
             if(fetchedSongEntity.isPresent()) {
                 songRepository.deleteById(songid);
-                return new ResponseEntity<>(Constants.SONG_DELETE_SUCCESS, HttpStatus.OK);
+                return new ResponseEntity<>(new ApiSuccessResponse(HttpStatus.OK.value(), HttpStatus.OK, Constants.SONG_DELETE_SUCCESS), HttpStatus.OK);
             }
             return new ResponseEntity<>(new ApiErrorResponse(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND,Constants.SONG_NOT_FOUND), HttpStatus.NOT_FOUND);
         } catch (Exception e){
