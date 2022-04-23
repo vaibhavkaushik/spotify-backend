@@ -1,10 +1,10 @@
-package com.spotify.service;
+package com.spotify.service.user;
 
-import com.spotify.UsersApiDelegate;
 import com.spotify.entities.UserEntity;
 import com.spotify.model.User;
 import com.spotify.repository.UserRepository;
 import com.spotify.utilities.ApiErrorResponse;
+import com.spotify.utilities.ApiSuccessResponse;
 import com.spotify.utilities.Constants;
 import com.spotify.utilities.ObjectMapperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class  UserApiService implements UsersApiDelegate {
+public class UserApiServiceImpl implements UserApiService {
 
     @Override
     public ResponseEntity<Object> createUser(User user) {
@@ -63,7 +63,7 @@ public class  UserApiService implements UsersApiDelegate {
             Optional<UserEntity> fetchedUserEntity = userRepository.findById(userid);
             if(fetchedUserEntity.isPresent()) {
                 userRepository.deleteById(userid);
-                return new ResponseEntity<>(Constants.USER_DELETE_SUCCESS, HttpStatus.OK);
+                return new ResponseEntity<>(new ApiSuccessResponse(HttpStatus.OK.value(), HttpStatus.OK, Constants.USER_DELETE_SUCCESS), HttpStatus.OK);
             }
             return new ResponseEntity<>(new ApiErrorResponse(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND,Constants.USER_NOT_FOUND), HttpStatus.NOT_FOUND);
         } catch (Exception e){
