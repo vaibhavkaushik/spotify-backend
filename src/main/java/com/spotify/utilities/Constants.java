@@ -9,6 +9,14 @@ public class Constants {
     public static final String USER_CREATE_FAIL = "User Creation Failed";
     public static final String USER_UPDATE_FAIL = "User Updation Failed";
 
+    public static final String USER_VALIDATION_FAIL = "User Validation Failed";
+
+
+
+    public static final String USER_NAME_INVALID = "User name min length should be 2";
+    public static final String USER_EMAIL_INVALID = "User email is invalid";
+    public static final String USER_CONTACT_INVALID = "User Contact Number is invalid";
+
 
     public static final String SONG_NOT_FOUND = "Song Not Found";
     public static final String SONGS_NOT_FOUND = "No Songs";
