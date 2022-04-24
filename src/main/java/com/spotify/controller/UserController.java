@@ -5,8 +5,11 @@ import com.spotify.model.User;
 import com.spotify.service.user.UserApiServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+@Validated
 @RestController
 public class UserController implements UsersApi{
 
@@ -14,7 +17,7 @@ public class UserController implements UsersApi{
     UserApiServiceImpl userApiServiceImpl;
 
     @Override
-    public ResponseEntity<Object> createUser(User user) {
+    public ResponseEntity<Object> createUser(@Valid User user) {
         return userApiServiceImpl.createUser(user);
     }
 
@@ -34,7 +37,6 @@ public class UserController implements UsersApi{
     }
 
     @Override
-    public ResponseEntity<Object> updateUser(Long userid, User user) {
-        return userApiServiceImpl.updateUser(userid, user);
-    }
+    public ResponseEntity<Object> updateUser(Long userid, User user) { return userApiServiceImpl.updateUser(userid, user); }
+
 }
