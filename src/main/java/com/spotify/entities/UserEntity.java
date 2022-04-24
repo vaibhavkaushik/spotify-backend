@@ -1,5 +1,6 @@
 package com.spotify.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -20,7 +21,7 @@ public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
+    @Column(name = "user_id", nullable = false)
     private Long id;
 
     @NotNull
@@ -36,5 +37,20 @@ public class UserEntity {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate dob;
     private String image;
+
+    private String password;
+    @JsonIgnore
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private RoleEntity role;
+
 
 }
