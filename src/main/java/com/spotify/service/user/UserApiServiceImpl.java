@@ -11,6 +11,7 @@ import com.spotify.validation.UserValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,11 +30,13 @@ public class UserApiServiceImpl implements UserApiService {
         userValidation = new UserValidation(true, "");
         if(userValidation.isValid(user)) {
             try {
+                //Set Passwd, can this be saved automatically ?
+                user.setPassword(new BCryptPasswordEncoder(10).encode(user.getPassword()));
                 UserEntity userEntity = ObjectMapperUtils.map(user, UserEntity.class);
                 UserEntity savedUserEntity = userRepository.save(userEntity);
                 User userCreated = ObjectMapperUtils.map(savedUserEntity, User.class);
 
-                return new ResponseEntity<>(userCreated, HttpStatus.OK);
+                return new ResponseEntity<>(savedUserEntity, HttpStatus.OK);
             } catch (Exception e) {
                 return new ResponseEntity<>(new ApiErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
             }
@@ -48,7 +51,7 @@ public class UserApiServiceImpl implements UserApiService {
             Optional<UserEntity> fetchedUserEntity = userRepository.findById(userid);
             if(fetchedUserEntity.isPresent()) {
                 User fetchedUser = ObjectMapperUtils.map(fetchedUserEntity.get(), User.class);
-                return new ResponseEntity<>(fetchedUser, HttpStatus.OK);
+                return new ResponseEntity<>(fetchedUserEntity, HttpStatus.OK);
             }
             return new ResponseEntity<>(new ApiErrorResponse(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND,Constants.USER_NOT_FOUND), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
@@ -62,7 +65,7 @@ public class UserApiServiceImpl implements UserApiService {
             List<UserEntity> fetchedUserEntityList = userRepository.findAll();
             List<User> fetchedUserList = ObjectMapperUtils.mapAll(fetchedUserEntityList, User.class);
 
-            return new ResponseEntity<>(fetchedUserList, HttpStatus.OK);
+            return new ResponseEntity<>(fetchedUserEntityList, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(new ApiErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }

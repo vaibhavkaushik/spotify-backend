@@ -18,7 +18,7 @@ public class UserAuthService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity user = userRepository.findByName(username);
         UserDetailsImpl userDetails = new UserDetailsImpl(user);
-
+        System.out.println(userDetails.toString());
         return userDetails;
     }
 }

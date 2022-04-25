@@ -24,6 +24,11 @@ public class UserEntity {
     @Column(name = "user_id", nullable = false)
     private Long id;
 
+    @JsonIgnore
+    public Long getId() {
+        return id;
+    }
+
     @NotNull
     @Size(min = 2, message = "Name should have atleast 2 charcaters")
     private String name;
@@ -39,6 +44,7 @@ public class UserEntity {
     private String image;
 
     private String password;
+
     @JsonIgnore
     public String getPassword() {
         return password;
@@ -52,5 +58,12 @@ public class UserEntity {
     @JoinColumn(name = "role_id")
     private RoleEntity role;
 
+    @JsonIgnore
+    public RoleEntity getRole() {
+        return role;
+    }
 
+    public void setRole(RoleEntity role) {
+        this.role = role;
+    }
 }
