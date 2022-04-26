@@ -47,6 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 .antMatchers("/roles/**").permitAll()
                 .antMatchers("/users/**").permitAll()
+                .antMatchers("/songs/**").hasRole("ADMIN")
 //                .antMatchers("/users/**").hasRole(ApplicationUserRole.ADMIN.name())
 //                .antMatchers(HttpMethod.POST,"/songs/**").hasAuthority(ApplicationUserPermission.SONG_WRITE.getPermission())
 //                .antMatchers(HttpMethod.DELETE,"/songs/**").hasAuthority(ApplicationUserPermission.SONG_WRITE.getPermission())

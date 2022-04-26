@@ -93,6 +93,7 @@ public class UserApiServiceImpl implements UserApiService {
                 Optional<UserEntity> fetchedUserEntity = userRepository.findById(userid);
                 if (fetchedUserEntity.isPresent()) {
                     user.setId(userid);
+                    user.setPassword(new BCryptPasswordEncoder(10).encode(user.getPassword()));
                     UserEntity updatedUser = ObjectMapperUtils.map(user, UserEntity.class);
                     userRepository.save(updatedUser);
                     return new ResponseEntity<>(user, HttpStatus.OK);
