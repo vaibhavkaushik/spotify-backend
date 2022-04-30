@@ -1,12 +1,11 @@
 package com.spotify.service.user;
 
+import com.spotify.entities.RoleEntity;
 import com.spotify.entities.UserEntity;
 import com.spotify.model.User;
+import com.spotify.repository.RoleRepository;
 import com.spotify.repository.UserRepository;
-import com.spotify.utilities.ApiErrorResponse;
-import com.spotify.utilities.ApiSuccessResponse;
-import com.spotify.utilities.Constants;
-import com.spotify.utilities.ObjectMapperUtils;
+import com.spotify.utilities.*;
 import com.spotify.validation.UserValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,14 +24,26 @@ public class UserApiServiceImpl implements UserApiService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    RoleRepository roleRepository;
+
+    // TODO:
+    // Change update method also ?
+    public UserEntity assignDefaultRole(UserEntity user) {
+        RoleEntity role = roleRepository.getRoleByUserRole(Constants.DEFAULT_ROLE);
+        user.setRole(role);
+        return user;
+    }
+
     @Override
     public ResponseEntity<Object> createUser(User user) {
         userValidation = new UserValidation(true, "");
-        if(userValidation.isValid(user)) {
+                                                       if(userValidation.isValid(user)) {
             try {
                 //Set Passwd, can this be saved automatically ?
                 user.setPassword(new BCryptPasswordEncoder(10).encode(user.getPassword()));
                 UserEntity userEntity = ObjectMapperUtils.map(user, UserEntity.class);
+                assignDefaultRole(userEntity);
                 UserEntity savedUserEntity = userRepository.save(userEntity);
                 User userCreated = ObjectMapperUtils.map(savedUserEntity, User.class);
 

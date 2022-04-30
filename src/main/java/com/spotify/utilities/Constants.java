@@ -2,6 +2,9 @@ package com.spotify.utilities;
 
 public class Constants {
 
+    public static final String DEFAULT_ROLE = "USER";
+    public static final String ADMIN_ROLE = "ADMIN";
+
     public static final String USER_NOT_FOUND = "User Not Found";
     public static final String USERS_NOT_FOUND = "No Users";
     public static final String USER_DELETE_SUCCESS = "User Deleted Successfully";
